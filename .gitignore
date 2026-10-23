@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+db.sqlite3
+staticfiles/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.idea/
+.jbeval/
