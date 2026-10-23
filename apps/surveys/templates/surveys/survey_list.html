@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% if own_surveys %}
+    <h1>Мои опросы</h1>
+    <ul class="list">
+      {% for survey in own_surveys %}
+        <li class="card list__item">
+          <div>
+            <div class="list__title">{{ survey.title }}</div>
+            <div class="muted">{{ survey.get_status_display }}, создан {{ survey.created_at|date:"d.m.Y" }}</div>
+          </div>
+          <a href="{% url 'surveys:stats' survey.pk %}">Статистика</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <h1>Опросы</h1>
+  {% if surveys %}
+    <ul class="list">
+      {% for survey in surveys %}
+        <li class="card list__item">
+          <div>
+            <div class="list__title">{{ survey.title }}</div>
+            <div class="muted">{{ survey.author.username }}, {{ survey.created_at|date:"d.m.Y" }}</div>
+          </div>
+          <a class="button" href="{% url 'surveys:take' survey.pk %}">Пройти</a>
+        </li>
+      {% endfor %}
+    </ul>
+    {% if next_cursor %}
+      <a class="button button--secondary" href="?before={{ next_cursor }}">Показать ещё</a>
+    {% endif %}
+  {% else %}
+    <p class="muted">Опубликованных опросов пока нет.</p>
+  {% endif %}
+{% endblock %}

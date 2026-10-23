@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}{{ survey.title }}{% endblock %}
+
+{% block content %}
+  <h1>{{ survey.title }}</h1>
+  <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="{{ progress.total }}" aria-valuenow="{{ progress.answered }}">
+    <div class="progress__bar" style="width: {% widthratio progress.answered progress.total 100 %}%"></div>
+  </div>
+  <p class="muted">Вопрос {{ progress.answered|add:1 }} из {{ progress.total }}</p>
+
+  <form class="card form" method="post">
+    {% csrf_token %}
+    <h2>{{ question.text }}</h2>
+    {{ form.question }}
+    {% if form.option.errors %}
+      <div class="alert alert--error">{{ form.option.errors|join:" " }}</div>
+    {% endif %}
+    <div class="options">
+      {% for radio in form.option %}
+        <label class="option">{{ radio.tag }} {{ radio.choice_label }}</label>
+      {% endfor %}
+    </div>
+    <button class="button" type="submit">Ответить</button>
+  </form>
+{% endblock %}

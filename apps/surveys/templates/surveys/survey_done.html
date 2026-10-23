@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}{{ survey.title }}{% endblock %}
+
+{% block content %}
+  <h1>{{ survey.title }}</h1>
+  <div class="card">
+    <p>Спасибо, вы ответили на все вопросы.</p>
+    <a href="{% url 'surveys:list' %}">К списку опросов</a>
+  </div>
+{% endblock %}

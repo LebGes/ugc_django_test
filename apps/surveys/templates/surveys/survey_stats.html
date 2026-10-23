@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load surveys_extras %}
+
+{% block title %}Статистика: {{ survey.title }}{% endblock %}
+
+{% block content %}
+  <h1>{{ survey.title }}</h1>
+  <p class="muted">{{ survey.get_status_display }}</p>
+
+  <div class="metrics">
+    <div class="card metric">
+      <div class="metric__value">{{ stats.participants }}</div>
+      <div class="muted">начали</div>
+    </div>
+    <div class="card metric">
+      <div class="metric__value">{{ stats.completed }}</div>
+      <div class="muted">завершили</div>
+    </div>
+    <div class="card metric">
+      <div class="metric__value">{{ stats.completion_rate }}%</div>
+      <div class="muted">доходят до конца</div>
+    </div>
+    <div class="card metric">
+      <div class="metric__value">{{ stats.average_duration|human_duration }}</div>
+      <div class="muted">среднее время</div>
+    </div>
+  </div>
+
+  {% for question in stats.questions %}
+    <section class="card">
+      <h2>{{ question.position }}. {{ question.text }}</h2>
+      <p class="muted">Ответов: {{ question.answers }}</p>
+      <table class="table">
+        {% for option in question.options %}
+          <tr{% if option.id in question.top_option_ids %} class="table__top"{% endif %}>
+            <td>{{ option.text }}</td>
+            <td class="table__bar"><div class="bar" style="width: {{ option.percent|floatformat:"0u" }}%"></div></td>
+            <td class="table__num">{{ option.votes }}</td>
+            <td class="table__num">{{ option.percent }}%</td>
+          </tr>
+        {% endfor %}
+      </table>
+    </section>
+  {% empty %}
+    <p class="muted">В опросе пока нет вопросов.</p>
+  {% endfor %}
+{% endblock %}

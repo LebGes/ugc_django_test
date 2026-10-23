@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Вход{% endblock %}
+
+{% block content %}
+  <h1>Вход</h1>
+  <form class="card form" method="post">
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+      <div class="alert alert--error">{{ form.non_field_errors|join:" " }}</div>
+    {% endif %}
+    <label>Логин {{ form.username }}</label>
+    <label>Пароль {{ form.password }}</label>
+    <input type="hidden" name="next" value="{{ next }}">
+    <button class="button" type="submit">Войти</button>
+  </form>
+{% endblock %}
